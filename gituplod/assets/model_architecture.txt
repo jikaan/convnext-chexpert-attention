@@ -1,0 +1,16 @@
+ConvNeXt-Base Architecture with CBAM Attention
+
+Key Features:
+- Base: ConvNeXt-Base
+- Attention: Convolutional Block Attention Module (CBAM)
+- Pretrained: ImageNet-22k
+- Fine-tuning: End-to-end
+- Input: 384x384 chest X-rays
+- Output: 14 pathology probabilities
+- Parameters: ~88M + CBAM
+
+CBAM Benefits:
+- Channel attention for feature refinement
+- Spatial attention for important regions
+- Lightweight and efficient
+- Improved pathology localization
