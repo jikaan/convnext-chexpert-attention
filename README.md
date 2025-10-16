@@ -1,6 +1,6 @@
 # ConvNeXt-CheXpert-Attention 🏥
 
-[![HuggingFace Model](https://img.shields.io/badge/%F0%9F%A4%97-Model%20Hub-yellow)](https://huggingface.co/calander/Convnext-Chexpert-Attention)
+[![HuggingFace Model](https://img.shields.io/badge/%F0%9F%A4%97-Model%20Hub-yellow)](https://huggingface.co/calender/Convnext-Chexpert-Attention)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
@@ -8,7 +8,7 @@ Multi-label chest X-ray classifier: **ConvNeXt-Base + CBAM attention** trained o
 
 **Model AUC: 0.81** | **Iteration 6** | **GradCAM Enabled** | **300MB**
 
-🤗 [Get Model Weights on HuggingFace](https://huggingface.co/calander/Convnext-Chexpert-Attention)
+🤗 [Get Model Weights on HuggingFace](https://huggingface.co/calender/Convnext-Chexpert-Attention)
 
 ---
 
@@ -65,7 +65,7 @@ cd convnext-chexpert-attention
 pip install -r requirements.txt
 
 # Download model from HuggingFace
-# https://huggingface.co/calander/Convnext-Chexpert-Attention
+# https://huggingface.co/calender/Convnext-Chexpert-Attention
 ```
 
 ### 2. Inference
@@ -198,7 +198,7 @@ If you use this in research:
 
 ## 🔗 Links
 
-- **Model (HuggingFace):** https://huggingface.co/calander/Convnext-Chexpert-Attention
+- **Model (HuggingFace):** https://huggingface.co/calender/Convnext-Chexpert-Attention
 - **CheXpert Dataset:** https://stanfordmlgroup.github.io/competitions/chexpert/
 - **Paper:** https://arxiv.org/abs/1901.07031
 
