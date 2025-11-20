@@ -78,24 +78,23 @@ print(f"Pathology Probabilities: {probs[0].tolist()}")
 2. Grad-CAM Visualization
 
 To generate attention maps for a specific image, use the provided script in src:
-Bash
+```Bash
 
 python src/gradcam_single.py \
     --image assets/test_image.jpg \
     --model assets/model/model.pth \
     --output results.png
-
+```
 3. Training
 
 To reproduce the training loop (Iteration 3):
-Bash
-
+```Bash
 python src/training/train.py \
     --data_dir /path/to/chexpert \
     --batch_size 4 \
     --epochs 3 \
     --lr 2e-5
-
+```
 Benchmarks
 
 Evaluated on the CheXpert Validation Set.
