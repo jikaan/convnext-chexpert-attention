@@ -108,7 +108,7 @@ Citation
 Code snippet
 ```
 @misc{convnext_cbam_2025,
-  author = {Your Name},
+  author = {Calender S},
   title = {ConvNeXt-CheXpert: Attention-Based Thoracic Classifier},
   year = {2025},
   publisher = {GitHub},
