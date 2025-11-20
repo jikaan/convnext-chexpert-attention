@@ -24,7 +24,7 @@ To maintain a clean workspace, the repository is organized as follows:
 │   └── training/           # Training scripts
 │       └── train.py        # Main training loop
 ├── assets/                 # Model weights and visuals
-│   ├── model/              # Checkpoint storage
+│   ├── model_architecture/              # text file containing model architecture
 │   └── analysis.png        # Sample visualizations
 ├── requirements.txt        # Dependencies
 └── README.md
