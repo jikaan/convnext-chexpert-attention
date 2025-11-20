@@ -1,211 +1,121 @@
-# ConvNeXt-CheXpert-Attention 🏥
+# ConvNeXt-CheXpert: Multi-Label Thoracic Disease Classification
 
-[![HuggingFace Model](https://img.shields.io/badge/%F0%9F%A4%97-Model%20Hub-yellow)](https://huggingface.co/calender/Convnext-Chexpert-Attention)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Framework](https://img.shields.io/badge/PyTorch-2.0%2B-orange)](https://pytorch.org/)
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-View_Weights-yellow)](https://huggingface.co/calender/GRADCAM-Convnext-Chexpert-Attention)
 
-Multi-label chest X-ray classifier: **ConvNeXt-Base + CBAM attention** trained on CheXpert to detect 14 thoracic pathologies.
+## Abstract
 
-**Model AUC: 0.81** | **Iteration 6** | **GradCAM Enabled** | **300MB**
+This repository contains a PyTorch implementation of a **ConvNeXt-Base** architecture augmented with **Convolutional Block Attention Modules (CBAM)**. The model is fine-tuned on the **CheXpert** dataset to detect 14 common thoracic pathologies.
 
-🤗 [Get Model Weights on HuggingFace](https://huggingface.co/calender/Convnext-Chexpert-Attention)
+The project focuses on improving model interpretability in medical imaging by integrating channel and spatial attention mechanisms, validated through **Grad-CAM** visualization.
 
----
+**Performance:** 0.81 mean AUC (Validation Set)
+**Model Size:** 300MB (FP32)
 
-## ⚡ Quick Demo
+## Directory Structure
 
-```python
+To maintain a clean workspace, the repository is organized as follows:
+
+```text
+.
+├── src/                    # Main source code
+│   ├── gradcam_single.py   # GradCAM analysis script
+│   └── training/           # Training scripts
+│       └── train.py        # Main training loop
+├── assets/                 # Model weights and visuals
+│   ├── model/              # Checkpoint storage
+│   └── analysis.png        # Sample visualizations
+├── requirements.txt        # Dependencies
+└── README.md
+```
+Installation
+```
+Bash
+
+git clone [https://github.com/jikaan/convnext-chexpert-attention.git](https://github.com/jikaan/convnext-chexpert-attention.git)
+cd convnext-chexpert-attention
+
+pip install -r requirements.txt
+```
+Usage
+
+1. Inference Example
+
+Below is a snippet to run inference using the trained weights.
+Python
+```
 import torch
 from PIL import Image
 from torchvision import transforms
 import timm
 
-# Load model
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model_path = 'assets/model/model.pth' # Update path as needed
+
 model = timm.create_model('convnext_base', pretrained=False, num_classes=14)
-model.load_state_dict(torch.load('model.pth'))
+model.load_state_dict(torch.load(model_path, map_location=device))
 model.eval()
 
-# Predict
-image = Image.open('chest_xray.jpg')
 transform = transforms.Compose([
     transforms.Grayscale(num_output_channels=3),
     transforms.Resize((384, 384)),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.503]*3, std=[0.289]*3)
+    transforms.Normalize(
+        mean=[0.503] * 3, 
+        std=[0.289] * 3
+    )
 ])
 
+image = Image.open('assets/sample_xray.jpg')
+input_tensor = transform(image).unsqueeze(0).to(device)
+
 with torch.no_grad():
-    probs = torch.sigmoid(model(transform(image).unsqueeze(0)))
-    
-# Results: 14 pathology probabilities
+    probs = torch.sigmoid(model(input_tensor))
+
+print(f"Pathology Probabilities: {probs[0].tolist()}")
 ```
+2. Grad-CAM Visualization
 
-See `examples/inference_example.py` for full code.
+To generate attention maps for a specific image, use the provided script in src:
+Bash
 
----
+python src/gradcam_single.py \
+    --image assets/test_image.jpg \
+    --model assets/model/model.pth \
+    --output results.png
 
-## 📖 What This Does
+3. Training
 
-Analyzes chest X-rays and predicts **14 pathologies**:
+To reproduce the training loop (Iteration 3):
+Bash
 
-Edema • Cardiomegaly • Pleural Effusion • Atelectasis • Consolidation • Pneumonia • Fracture • Lung Opacity • Pneumothorax • Lung Lesion • Cardiomediastinum • Pleural Other • Support Devices • No Finding
-
-**Includes GradCAM visualization** to see which regions the model focuses on for each prediction.
-
----
-
-## 🚀 Getting Started
-
-### 1. Setup
-
-```bash
-git clone https://github.com/jikaan/convnext-chexpert-attention.git
-cd convnext-chexpert-attention
-
-pip install -r requirements.txt
-
-# Download model from HuggingFace
-# https://huggingface.co/calender/Convnext-Chexpert-Attention
-```
-
-### 2. Inference
-
-```bash
-# Basic usage (requires model file)
-python gituplod/src/gradcam_single.py --image path/to/xray.jpg --model hfupld/model/model.pth
-```
-
-### 3. GradCAM Visualization
-
-```bash
-# Single image analysis with multiple findings
-python gituplod/src/gradcam_single.py --image path/to/xray.jpg --model hfupld/model/model.pth --output results.png
-```
-
-See `hfupld/` folder for sample visualizations (1.png, 2.png, 3.png, analysis.png).
-
----
-
-## 📊 Performance
-
-| Metric | Value |
-|--------|-------|
-| Validation AUC | 0.81 |
-| Architecture | ConvNeXt-Base + CBAM |
-| Dataset | CheXpert (224K images) |
-| Input Size | 384×384 |
-| Model Size | 351MB |
-
-**Examples from Test Set:**
-
-| Pathology | Confidence | GradCAM |
-|-----------|-----------|---------|
-| Edema | 63.7% | ![](../hfupld/analysis.png) |
-| Multiple Findings | 65.2% | ![](../hfupld/1.png) |
-| Cardiomegaly | 67.2% | ![](../hfupld/2.png) |
-| Pneumothorax | 63.1% | ![](../hfupld/3.png) |
-
----
-
-## 📁 Structure
-
-```
-chexpert-convnext-classifier/
-├── gituplod/                          # Repository files
-│   ├── src/
-│   │   └── gradcam_single.py          # Single image GradCAM analysis
-│   ├── training/
-│   │   └── train.py                   # Training script (iteration 3)
-│   ├── examples/
-│   │   └── test_images/               # Sample visualization outputs
-│   ├── LICENSE                        # Apache 2.0 License
-│   ├── README.md                      # This file
-│   └── requirements.txt               # Python dependencies
-├── hfupld/                           # Model and demo files
-│   ├── model/
-│   │   ├── model.pth (351MB)          # Model weights
-│   │   └── model_config.json          # Model configuration
-│   ├── 1.png, 2.png, 3.png            # Single pathology GradCAM examples
-│   ├── analysis.png                   # Multi-disease visualization
-│   └── README.md                      # Model card
-└── requirements.txt                   # Project dependencies
-```
-
----
-
-## 🏋️ Training
-
-Reproduce results with iteration 3 training script:
-
-```bash
-python gituplod/training/train.py \
-    --data_dir path/to/chexpert \
+python src/training/train.py \
+    --data_dir /path/to/chexpert \
     --batch_size 4 \
     --epochs 3 \
     --lr 2e-5
+
+Benchmarks
+
+Evaluated on the CheXpert Validation Set.
+Metric	Score	Configuration
+Mean AUC	0.81	ConvNeXt-Base + CBAM
+Input Size	384x384	Bicubic Interpolation
+Optimizer	AdamW	Lookahead wrapper
+
+Citation
+
+Code snippet
 ```
-
-**Training Config:**
-- Optimizer: AdamW + Lookahead
-- Loss: Focal Loss + uncertainty masking
-- Augmentation: Crops, flips, rotation, color jitter
-- Dataset: CheXpert (88% train, 2% val, 10% test)
-
-See `gituplod/training/train.py` for full implementation.
-
----
-
-## 💡 Key Features
-
-✅ **CBAM Attention** - Better pathology localization  
-✅ **GradCAM Support** - Visual explanations  
-✅ **Multi-label** - Detects multiple pathologies simultaneously  
-✅ **Uncertainty Handling** - Trained with uncertain labels  
-✅ **Clean Code** - Iteration 3 training script included  
-
----
-
-## ⚠️ Important
-
-**This is research code. Medical Disclaimer:**
-- NOT for clinical diagnosis
-- NOT FDA-approved
-- Requires expert radiologist review
-- See [LICENSE](LICENSE) for full terms
-
----
-
-## 📝 Citation
-
-If you use this in research:
-
-```bibtex
-@software{convnext_chexpert_attention_2025,
-  author = {Time},
-  title = {ConvNeXt-Base CheXpert Classifier with CBAM Attention},
+@misc{convnext_cbam_2025,
+  author = {Your Name},
+  title = {ConvNeXt-CheXpert: Attention-Based Thoracic Classifier},
   year = {2025},
-  url = {https://github.com/jikaan/convnext-chexpert-attention}
-}
-
-@article{irvin2019chexpert,
-  title={CheXpert: A large chest radiograph dataset with uncertainty labels},
-  author={Irvin, Jeremy and Rajpurkar, Pranav and Ko, Michael and others},
-  year={2019}
+  publisher = {GitHub},
+  url = {[https://github.com/jikaan/convnext-chexpert-attention](https://github.com/jikaan/convnext-chexpert-attention)}
 }
 ```
+License
 
----
-
-## 🔗 Links
-
-- **Model (HuggingFace):** https://huggingface.co/calender/Convnext-Chexpert-Attention
-- **CheXpert Dataset:** https://stanfordmlgroup.github.io/competitions/chexpert/
-- **Paper:** https://arxiv.org/abs/1901.07031
-
----
-
-## 📧 Contact
-
-Questions? Open an issue on GitHub.
-
-**Created by Time | October 2025**
+This project is licensed under the Apache 2.0 License.
