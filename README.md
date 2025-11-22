@@ -78,13 +78,13 @@ If you utilize this repository or methodology in your research, please cite the 
 Code snippet
 
 @misc{convnext_cbam_2025,
-  author = {Time},
+  author = {Calender S},
   title = {ConvNeXt-CheXpert: Attention-Based Thoracic Classifier},
   year = {2025},
   publisher = {GitHub},
   url = {[https://github.com/jikaan/convnext-chexpert-attention](https://github.com/jikaan/convnext-chexpert-attention)}
 }
-
+```
 License
-
+```
 This project is licensed under the Apache 2.0 License.
