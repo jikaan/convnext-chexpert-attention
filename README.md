@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Framework](https://img.shields.io/badge/PyTorch-2.0%2B-orange)](https://pytorch.org/)
-[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-View_Weights-yellow)](https://huggingface.co/calender/GRADCAM-Convnext-Chexpert-Attention)
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-View_Weights-yellow)](https://huggingface.co/calender/Convnext-Chexpert-Attention)
 
 ## Abstract
 
