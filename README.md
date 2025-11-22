@@ -71,7 +71,7 @@ If you utilize this repository or methodology in your research, please cite the 
 Code snippet
 
 @misc{convnext_cbam_2025,
-  author = {Calender S},
+  author = {Calender, S.},
   title = {ConvNeXt-CheXpert: Attention-Based Thoracic Classifier},
   year = {2025},
   publisher = {GitHub},
