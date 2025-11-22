@@ -1,10 +1,3 @@
-Here is the strictly professional, formal, and logical version of the GitHub README.md.
-
-I have removed all emojis and stylistic icons. The document is structured to resemble a research code repository, focusing on methodology, reproducibility, and access to the artifacts.
-
-GitHub Repository README (README.md)
-
-Markdown
 
 # ConvNeXt-CheXpert: Multi-Label Thoracic Disease Classification
 
